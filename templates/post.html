@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POST</title>
+</head>
+<body bgcolor="75492">
+<div>
+    <ul>
+        {% for i in post_objects %}
+        <li>
+            <h3>{{i.title}}</h3>
+            <p>{{i.description}}</p>
+            <img src="{{i.image.url}}" alt="" width="600" height="500" align="center">
+            <p><i><b>{{i.created_date}}</b></i></p>
+            <strong><a href="{{i.url}}"></a></strong>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

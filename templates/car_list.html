@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .car-list {
+            display: grid;
+            gap: 30px;
+        }
+
+        .car-item {
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .car-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-image {
+            width: 70%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .car-info {
+            padding: 20px;
+        }
+
+        .car-title {
+            margin-top: 0;
+        }
+
+        .car-description {
+            color: #666;
+        }
+
+        .car-video {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+        .car-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .car-type {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            color: #3498db;
+        }
+
+        .car-date {
+            font-style: italic;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/create_car/"><button>Добавить новую машину</button></a>
+    <h1 align="center">Список машин</h1>
+    <ul class="car-list" role="list">
+        {% for i in car_objects %}
+        <li class="car-item">
+            <article aria-label="{{i.title}}">
+                <figure>
+                    <img src="{{i.image.url}}" alt="{{i.title}}" class="car-image">
+                    <figcaption class="car-info">
+                        <h2 class="car-title">{{i.title}}</h2>
+                        <div class="car-price"><strong>{{i.cost}}$</strong></div>
+                        <a href="/car_list/{{i.id}}/"><button class="btn">Посмотреть подробнее</button></a>
+<!--                        <time class="car-date" datetime="{{i.created_date|date:'Y-m-d'}}">{{i.created_date}}</time>-->
+                    </figcaption>
+                </figure>
+<!--                <iframe src="{{i.video}}" title="Video preview of {{i.title}}" class="car-video"></iframe>-->
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

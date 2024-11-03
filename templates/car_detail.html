@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{car_detail.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .car-detail {
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .car-detail:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .car-info {
+            padding: 20px;
+        }
+
+        .car-title {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .car-type {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .car-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .car-date {
+            font-style: italic;
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .car-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .car-video {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .car-image {
+                height: 200px;
+            }
+
+            .car-video {
+                height: 300px;
+            }
+        }
+.bubble-btn {
+    position: relative;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.bubble-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.bubble-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.bubble-btn:hover::before {
+    transform: translateY(0);
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/car_list/" class="bubble-btn">Вернуться на список машин</a>
+
+    <article class="car-detail">
+        <figure>
+            <img src="{{car_detail.image.url}}" alt="{{car_detail.title}}" class="car-image">
+            <figcaption class="car-info">
+                <h1 class="car-title">{{car_detail.title}}</h1>
+                <div class="car-type">{{car_detail.car_type}}</div>
+                <div class="car-price"><strong>{{car_detail.cost}}$</strong></div>
+                <time class="car-date" datetime="{{car_detail.created_date|date:'Y-m-d'}}">{{car_detail.created_date}}</time>
+                <p class="car-description">{{car_detail.description}}</p>
+
+                <!-- Добавляем кнопку для переключения видео -->
+                <button id="toggleVideoBtn" class="bubble-btn">Показать видео</button>
+                <iframe src="{{car_detail.video}}" title="Video preview of {{car_detail.title}}" class="car-video" style="display: none;"></iframe>
+            </figcaption>
+        </figure>
+    </article>
+
+    <!-- Добавляем скрипт для переключения видео -->
+    <script>
+        document.getElementById('toggleVideoBtn').addEventListener('click', function() {
+            var video = document.querySelector('.car-video');
+            var btnText = this.textContent;
+            if (video.style.display === 'none') {
+                video.style.display = 'block';
+                this.textContent = 'Скрыть видео';
+            } else {
+                video.style.display = 'none';
+                this.textContent = 'Показать видео';
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
