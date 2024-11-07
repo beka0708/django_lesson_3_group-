@@ -33,3 +33,25 @@ def create_car_view(request):
     return render(request, 'create_car.html', {
         "form": form
     })
+
+
+# update-car
+def update_car_view(request, id):
+    car_object = get_object_or_404(Car, id=id)
+    if request.method == "POST":
+        form = CarForm(instance=car_object, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("<h2>Машина успешно обновлена</h2>")
+    else:
+        form = CarForm(instance=car_object)
+        return render(request, 'update_car.html', {
+            "form": form, "object": car_object
+        })
+
+
+# car-delete
+def delete_car_view(request, id):
+    car_object = get_object_or_404(Car, id=id)
+    car_object.delete()
+    return HttpResponse("<h2>Машина успешно удалена</h2>")

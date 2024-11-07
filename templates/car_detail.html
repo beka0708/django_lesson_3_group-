@@ -125,6 +125,8 @@
 <body>
 <div class="container">
     <a href="/car_list/" class="bubble-btn">Вернуться на список машин</a>
+    <a href="/car_list/{{car_detail.id}}/update/" class="bubble-btn">Обновить машину</a>
+    <a href="/car_list/{{car_detail.id}}/delete/" class="bubble-btn">Удалить машину</a>
 
     <article class="car-detail">
         <figure>
@@ -144,6 +146,9 @@
     </article>
 
     <!-- Добавляем скрипт для переключения видео -->
+<!--    <script>-->
+<!--        alert('твоя машина успешно обновлена')-->
+<!--    </script>-->
     <script>
         document.getElementById('toggleVideoBtn').addEventListener('click', function() {
             var video = document.querySelector('.car-video');
