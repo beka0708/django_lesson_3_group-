@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Car
-from .forms import CarForm
+from django.views.generic import CreateView
+
+from .models import Car, CommentCar
+from .forms import CarForm, CarCommentForm
 
 
 # list-car
@@ -23,11 +25,14 @@ def car_detail_view(request, id):
 # create-car
 def create_car_view(request):
     method = request.method
+    car_object = Car.objects.all()
     if method == 'POST':
         form = CarForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponse("<h2>Машина успешно добавлена!</h2>")
+            return render(request, 'approve.html', {
+                "object": car_object
+            })
     else:
         form = CarForm()
     return render(request, 'create_car.html', {
@@ -42,7 +47,9 @@ def update_car_view(request, id):
         form = CarForm(instance=car_object, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("<h2>Машина успешно обновлена</h2>")
+            return render(request, 'approve.html', {
+                "object": car_object
+            })
     else:
         form = CarForm(instance=car_object)
         return render(request, 'update_car.html', {
@@ -54,4 +61,21 @@ def update_car_view(request, id):
 def delete_car_view(request, id):
     car_object = get_object_or_404(Car, id=id)
     car_object.delete()
-    return HttpResponse("<h2>Машина успешно удалена</h2>")
+    return render(request, 'approve.html', {
+        "object": car_object
+    })
+
+
+class CarComment(CreateView):
+    template_name = "car_comment.html"
+    form_class = CarCommentForm
+    queryset = CommentCar.objects.all()
+    success_url = '/car_list/'
+
+    def get_object(self, **kwargs):
+        car_id = self.kwargs.get("id")
+        return get_object_or_404(CommentCar, id=car_id)
+
+    def form_valid(self, form):
+        print(form.clean)
+        return super(CarComment, self).form_valid(form=form)

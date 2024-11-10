@@ -73,8 +73,9 @@
     </style>
 </head>
 <body>
+{% include 'header.html' %}
 <div class="container">
-    <a href="/create_car/"><button>Добавить новую машину</button></a>
+<!--    <a href="/create_car/"><button>Добавить новую машину</button></a>-->
     <h1 align="center">Список машин</h1>
     <ul class="car-list" role="list">
         {% for i in car_objects %}

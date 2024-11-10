@@ -123,11 +123,8 @@
     </style>
 </head>
 <body>
+{% include 'header.html' %}
 <div class="container">
-    <a href="/car_list/" class="bubble-btn">Вернуться на список машин</a>
-    <a href="/car_list/{{car_detail.id}}/update/" class="bubble-btn">Обновить машину</a>
-    <a href="/car_list/{{car_detail.id}}/delete/" class="bubble-btn">Удалить машину</a>
-
     <article class="car-detail">
         <figure>
             <img src="{{car_detail.image.url}}" alt="{{car_detail.title}}" class="car-image">
@@ -137,6 +134,11 @@
                 <div class="car-price"><strong>{{car_detail.cost}}$</strong></div>
                 <time class="car-date" datetime="{{car_detail.created_date|date:'Y-m-d'}}">{{car_detail.created_date}}</time>
                 <p class="car-description">{{car_detail.description}}</p>
+
+                    <a href="/car_list/" class="bubble-btn">Вернуться на список машин</a>
+    <a href="/car_list/{{car_detail.id}}/update/" class="bubble-btn">Обновить машину</a>
+    <a href="/car_list/{{car_detail.id}}/delete/" class="bubble-btn">Удалить машину</a>
+
 
                 <!-- Добавляем кнопку для переключения видео -->
                 <button id="toggleVideoBtn" class="bubble-btn">Показать видео</button>
@@ -163,5 +165,40 @@
         });
     </script>
 </div>
+    <table border="4px">
+
+
+        <tr>
+            <td>Текст</td> &nbsp; <td>Рейтинг</td>&nbsp; <td>Дата создания</td>
+        </tr>
+        {% for j in car_detail.comments.all %}
+        <tr>
+            <td>{{j.text}}</td>
+            <td>ПРивет</td>
+            <td>{{j.rate}}</td>
+            <td>{{j.created_data}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+<!--        <table border="4px">-->
+<!--            <tr>-->
+<!--                <tb>Текст</tb> &nbsp;-->
+<!--                <tb>Рейтинг</tb> &nbsp;-->
+<!--                <tb>Дата создания</tb> &nbsp;-->
+<!--            </tr>-->
+<!--&lt;!&ndash;            {% for j in car_detail.comment.all %}&ndash;&gt;-->
+<!--            <tr>-->
+<!--                <td>{{j.text}}</td>-->
+<!--                <td>ПРивет</td>-->
+<!--                <td>{{j.title}}</td>-->
+<!--                <td>{{j.rate}}</td>-->
+<!--                <td>{{j.created_date}}</td>-->
+<!--            </tr>-->
+<!--&lt;!&ndash;            {% endfor %}&ndash;&gt;-->
+<!--        </table>-->
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.as_p}}
+        </form>
 </body>
 </html>
