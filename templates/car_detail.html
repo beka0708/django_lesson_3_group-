@@ -90,6 +90,41 @@
                 height: 300px;
             }
         }
+        .comments-section {
+            margin-top: 40px;
+        }
+
+        .comments-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .comments-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .comments-table th, .comments-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comments-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .comments-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .comments-table tr:hover {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
 .bubble-btn {
     position: relative;
     background-color: #e74c3c;
@@ -116,6 +151,26 @@
     transform: translateY(100%);
     transition: transform 0.5s ease-in-out;
 }
+.rating {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .rating > span {
+            display: inline-block;
+            position: relative;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>');
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .rating > span.rated {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
+        }
 
 .bubble-btn:hover::before {
     transform: translateY(0);
@@ -127,22 +182,24 @@
 <div class="container">
     <article class="car-detail">
         <figure>
-            <img src="{{car_detail.image.url}}" alt="{{car_detail.title}}" class="car-image">
+            <img src="{{object.image.url}}" alt="{{car_detail.title}}" class="car-image">
             <figcaption class="car-info">
-                <h1 class="car-title">{{car_detail.title}}</h1>
-                <div class="car-type">{{car_detail.car_type}}</div>
-                <div class="car-price"><strong>{{car_detail.cost}}$</strong></div>
-                <time class="car-date" datetime="{{car_detail.created_date|date:'Y-m-d'}}">{{car_detail.created_date}}</time>
-                <p class="car-description">{{car_detail.description}}</p>
+                <h1 class="car-title">{{object.title}}</h1>
+                <div class="car-type">{{object.car_type}}</div>
+                <div class="car-price"><strong>{{object.cost}}$</strong></div>
+                <time class="car-date" datetime="{{object.created_date|date:'Y-m-d'}}">{{object.created_date}}</time>
+                <p class="car-description">{{object.description}}</p>
 
                     <a href="/car_list/" class="bubble-btn">Вернуться на список машин</a>
-    <a href="/car_list/{{car_detail.id}}/update/" class="bubble-btn">Обновить машину</a>
-    <a href="/car_list/{{car_detail.id}}/delete/" class="bubble-btn">Удалить машину</a>
+    <a href="/car_list/{{object.id}}/update/" class="bubble-btn">Обновить машину</a>
+    <a href="/car_list/{{object.id}}/delete/" class="bubble-btn">Удалить машину</a>
+    <a href="/car_list/{{object.id}}/comment/" class="bubble-btn">Оставить комментарий</a>
+
 
 
                 <!-- Добавляем кнопку для переключения видео -->
                 <button id="toggleVideoBtn" class="bubble-btn">Показать видео</button>
-                <iframe src="{{car_detail.video}}" title="Video preview of {{car_detail.title}}" class="car-video" style="display: none;"></iframe>
+                <iframe src="{{object.video}}" title="Video preview of {{object.title}}" class="car-video" style="display: none;"></iframe>
             </figcaption>
         </figure>
     </article>
@@ -165,40 +222,28 @@
         });
     </script>
 </div>
-    <table border="4px">
-
-
+<div class="comments-section">
+    <h2 class="comments-title">Комментарии</h2>
+    <table class="comments-table">
         <tr>
-            <td>Текст</td> &nbsp; <td>Рейтинг</td>&nbsp; <td>Дата создания</td>
+            <th>Текст</th>
+            <th>Рейтинг</th>
+            <th>Дата создания</th>
         </tr>
-        {% for j in car_detail.comments.all %}
+        {% for comment in object.comments.all %}
         <tr>
-            <td>{{j.text}}</td>
-            <td>ПРивет</td>
-            <td>{{j.rate}}</td>
-            <td>{{j.created_data}}</td>
+            <td>{{ comment.text }}</td>
+            <td>
+                {% for i in range|make_list|slice:"0:comment.rate" %}
+                    &#9733;
+                {% endfor %}
+                {% for i in range|make_list|slice:"comment.rate:5" %}
+                    &#9734;
+                {% endfor %}
+            </td>
+            <td>{{ comment.created_date }}</td>
         </tr>
         {% endfor %}
     </table>
-<!--        <table border="4px">-->
-<!--            <tr>-->
-<!--                <tb>Текст</tb> &nbsp;-->
-<!--                <tb>Рейтинг</tb> &nbsp;-->
-<!--                <tb>Дата создания</tb> &nbsp;-->
-<!--            </tr>-->
-<!--&lt;!&ndash;            {% for j in car_detail.comment.all %}&ndash;&gt;-->
-<!--            <tr>-->
-<!--                <td>{{j.text}}</td>-->
-<!--                <td>ПРивет</td>-->
-<!--                <td>{{j.title}}</td>-->
-<!--                <td>{{j.rate}}</td>-->
-<!--                <td>{{j.created_date}}</td>-->
-<!--            </tr>-->
-<!--&lt;!&ndash;            {% endfor %}&ndash;&gt;-->
-<!--        </table>-->
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{form.as_p}}
-        </form>
 </body>
 </html>

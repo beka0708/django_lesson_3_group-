@@ -8,7 +8,7 @@ class Car(models.Model):
         ("Универсал", "Универсал"),
         ("Кабриолет", "Кабриолет")
     }
-    title = models.CharField("Заголовок", max_length=100)
+    title = models.CharField("Название машины", max_length=100)
     description = models.TextField("Описание", blank=True)
     image = models.ImageField("Фото", upload_to="")
     created_date = models.DateTimeField(auto_now_add=True)
@@ -26,13 +26,13 @@ class Car(models.Model):
 
 class CommentCar(models.Model):
     RATE = {
-        ("*", "*"),
-        ("**", "**"),
-        ("***", "***"),
-        ("****", "****"),
-        ("*****", "*****"),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
     }
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="car")
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="comments")
     text = models.TextField()
     rate = models.CharField(max_length=17, choices=RATE)
     created_date = models.DateTimeField(auto_now_add=True)

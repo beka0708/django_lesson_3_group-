@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление записи</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        button, .cancel-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button[type="submit"] {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .cancel-button {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .cancel-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        @media screen and (max-width: 480px) {
+            .button-container {
+                flex-direction: column;
+            }
+
+            button, .cancel-button {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <h1>Вы уверены, что хотите удалить запись?</h1>
+        <div class="button-container">
+            <button type="submit">ДА</button>
+            <a href="/car_list/" class="cancel-button">НЕТ</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -2,17 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Comment</title>
+    <title>Оставить комментарий</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        /* Стили для рейтинга звездами */
+        .rating {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .rating > span {
+            display: inline-block;
+            position: relative;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>');
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .rating > span.rated {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
+        }
+
+        @media screen and (max-width: 480px) {
+            form {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-<center>
-    <form method="post" enctype="multipart/form-data">
-        <h3>Оставить отзыв</h3>
-          {% csrf_token %}
-          {{form.as_p}}
+<div class="container">
+    <h1>Оставить комментарий</h1>
 
-        <input type="submit">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="rating">
+            {% for i in range|make_list %}
+              <span id="star{{i}}" onclick="rate({{i}})">&#9734;</span>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" id="id_rate" name="rate" value="0">
+
+        <button type="submit">Отправить комментарий</button>
     </form>
-</center>
+</div>
+
+<script>
+    function rate(star) {
+        var stars = document.querySelectorAll('.rating > span');
+        for (var i = 0; i < star; i++) {
+            stars[i].classList.add('rated');
+        }
+        for (var i = star; i < stars.length; i++) {
+            stars[i].classList.remove('rated');
+        }
+        document.getElementById('id_rate').value = star;
+    }
+
+    var stars = document.querySelectorAll('.rating > span');
+    for (var i = 0; i < stars.length; i++) {
+        stars[i].addEventListener('click', function(e) {
+            rate(parseInt(e.target.id.replace('star', '')));
+        });
+    }
+</script>
 </body>
 </html>
