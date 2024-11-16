@@ -37,21 +37,21 @@ class CarDetailView(DetailView):
 
 
 # create-car
-# def create_car_view(request):
-#     method = request.method
-#     car_object = Car.objects.all()
-#     if method == 'POST':
-#         form = CarForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return render(request, 'approve.html', {
-#                 "object": car_object
-#             })
-#     else:
-#         form = CarForm()
-#     return render(request, 'create_car.html', {
-#         "form": form
-#     })
+def create_car_view(request):
+    method = request.method
+    car_object = Car.objects.all()
+    if method == 'POST':
+        form = CarForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'approve.html', {
+                "object": car_object
+            })
+    else:
+        form = CarForm()
+    return render(request, 'create_car.html', {
+        "form": form
+    })
 
 class CreateCarView(CreateView):
     template_name = 'create_car.html'
